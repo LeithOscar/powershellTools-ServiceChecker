@@ -1,16 +1,8 @@
 ﻿param (
-   [string]$repo = ""
+   [string]$path = ""
 )
 
 $watch = [system.diagnostics.stopwatch]::StartNew()
-$root ="component"
-
-
-
-$internalPath = "C:\WK_Sourcecode\Repos\" + $repo + "Repo\Newpol\Shell\Modules\" + $repo +"\Client\Scripts\v4\src\internal\components"
-
-$outputPath = "C:\WK_Sourcecode\Repos\" + $repo + "Repo\Newpol\Shell\Modules\"+ $repo + "\Client\Scripts\v4\src\internal\services"
-
 
 $servicesTested= 0
 $servicesNoTestedList= @()
@@ -19,7 +11,7 @@ $collectionWithItems = New-Object System.Collections.ArrayList
 
 #internal
 
-Get-ChildItem $internalPath -Recurse -Filter *service.ts | 
+Get-ChildItem $path -Recurse -Filter *service.ts | 
 Foreach-Object {
     
            $pathSpec =$_.FullName
@@ -44,30 +36,6 @@ Foreach-Object {
                 $servicesNoTested =$servicesNoTested +1
              }
          }  
-
-   }
-
-#shared
-
-Get-ChildItem $outputPath -Recurse -Filter *service.ts | 
-Foreach-Object {
-    
-           $pathSpec =$_.FullName
-           $pathSpec.Replace(".ts",".spec.ts")
-          if([System.IO.File]::Exists($pathSpec))
-          {
-
-            Write-Host $_.Name "--- (done)" -ForegroundColor Yellow
-            Write-Host $pathSpec "--- (Tested)" -ForegroundColor green
-            $servicesTested =$servicesTested +1 
-          }
-          else
-          {
-            Write-Host 'No tested'
-            Write-Host $pathSpec -ForegroundColor red
-            Write-Host $_.Name "--- (done)" -ForegroundColor Yellow
-            $servicesNoTested =$servicesNoTested +1
-          }  
 
    }
 
