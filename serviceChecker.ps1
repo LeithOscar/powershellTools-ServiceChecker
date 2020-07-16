@@ -7,7 +7,6 @@ $watch = [system.diagnostics.stopwatch]::StartNew()
 $servicesTested= 0
 $servicesNoTestedList= @()
 $servicesNoTested= 0
-$collectionWithItems = New-Object System.Collections.ArrayList
 
 #internal
 
